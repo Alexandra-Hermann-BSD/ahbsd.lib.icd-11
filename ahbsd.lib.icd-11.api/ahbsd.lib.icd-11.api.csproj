@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>ahbsd.lib.icd_11.api</RootNamespace>
+        <Title>ahbsd library for ICD-11</Title>
+        <Authors>Alexandra Hermann</Authors>
+        <Description>A library to implement the WHO API</Description>
+        <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+        <Company>Alexandra Hermann – Beratung, Software, Design</Company>
+        <Product>ahbsd.lib.icd-11</Product>
+        <AssemblyVersion>1.0</AssemblyVersion>
+        <FileVersion>1.0</FileVersion>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+      <DocumentationFile>bin\Debug\ahbsd.lib.icd-11.api.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+      <DocumentationFile>bin\Release\ahbsd.lib.icd-11.api.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ahbsd.lib" Version="1.6.0" />
+    </ItemGroup>
+
+</Project>
