@@ -33,7 +33,7 @@ namespace ahbsd.lib.icd_11.api.Exceptions
         /// <param name="message">The predefined message</param>
         /// <param name="expectedLineAmount">The expected amount of lines</param>
         /// <param name="realLineAmount">The real amount of lines</param>
-        internal WrongLineAmountException(string message, int expectedLineAmount, int realLineAmount) : base(GetMessage(expectedLineAmount, realLineAmount, message))
+        public WrongLineAmountException(string message, int expectedLineAmount, int realLineAmount) : base(GetMessage(expectedLineAmount, realLineAmount, message))
         {
             ExpectedLineAmount = expectedLineAmount;
             RealLineAmount = realLineAmount;
@@ -76,7 +76,7 @@ namespace ahbsd.lib.icd_11.api.Exceptions
             if (!message.IsNullOrWhiteSpace())
             {
                 builder.Append(message.TrimEnd());
-                builder.Append(string.Empty);
+                builder.Append(" ");
             }
 
             builder.Append($"{expected} ");
