@@ -27,8 +27,6 @@ namespace ahbsd.lib.icd_11.test.Secure
 {
     public class ClientInfoTest
     {
-        private static readonly string separator = $"{Path.DirectorySeparatorChar}"; 
-
         [Theory]
         [InlineData("secure1.txt")]
         [InlineData("secure2.txt")]
@@ -38,8 +36,9 @@ namespace ahbsd.lib.icd_11.test.Secure
         public void TestInterfaceClientInfo(string path)
         {
             IClientInfo clientInfo = null;
+            IClient client = null;
             var currentPath = Path.GetFullPath(".");
-            var sourcePath = Path.GetFullPath($"{currentPath}{separator}..{separator}..{separator}..{separator}Secure{separator}{path}");
+            var sourcePath = Helper.GetSourcePath(currentPath, path);
 
             try
             {
@@ -47,18 +46,7 @@ namespace ahbsd.lib.icd_11.test.Secure
             }
             catch (Exception e)
             {
-                switch (e)
-                {
-                    case WrongLineAmountException wrongLineAmountException:
-                        Assert.Equal(3, wrongLineAmountException.RealLineAmount);
-                        Assert.Equal(2, wrongLineAmountException.ExpectedLineAmount);
-                        break;
-                    case ArgumentNullException argumentNullException:
-                        Assert.Equal("path", argumentNullException.ParamName);
-                        break;
-                    default:
-                        throw e;
-                }
+                AssertException(path, e);
             }
 
             if (clientInfo != null)
@@ -69,6 +57,42 @@ namespace ahbsd.lib.icd_11.test.Secure
             else
             {
                 Assert.Null(clientInfo);
+            }
+            
+            try
+            {
+                client = new Client(sourcePath);
+            }
+            catch (Exception e)
+            {
+                AssertException(path, e);
+            }
+
+            if (client != null)
+            {
+                Assert.Equal(sourcePath, client.Path);
+            }
+        }
+
+        private static void AssertException(string path, Exception exception)
+        {
+            switch (exception)
+            {
+                case WrongLineAmountException wrongLineAmountException:
+                    Assert.Equal(3, wrongLineAmountException.RealLineAmount);
+                    Assert.Equal(2, wrongLineAmountException.ExpectedLineAmount);
+                    break;
+                case ArgumentNullException argumentNullException:
+                    Assert.Equal("path", argumentNullException.ParamName);
+                    break;
+                case FileNotFoundException fileNotFoundException:
+                    if (path != null)
+                        Assert.Contains(path, fileNotFoundException.FileName ?? string.Empty);
+                    else
+                        Assert.Null(path);
+                    break;
+                default:
+                    throw exception;
             }
         }
     }

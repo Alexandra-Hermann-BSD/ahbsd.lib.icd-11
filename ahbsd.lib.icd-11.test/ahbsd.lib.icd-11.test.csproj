@@ -5,6 +5,8 @@
         <RootNamespace>ahbsd.lib.icd_11.test</RootNamespace>
 
         <IsPackable>false</IsPackable>
+
+        <LangVersion>7.3</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -59,7 +59,7 @@ namespace ahbsd.lib.icd_11.api.Secure
         /// <exception cref="FileNotFoundException">If the given <paramref name="path"/> is wrong</exception>
         public static IClientInfo GetClientInfo(string path)
         {
-            IClientInfo result;
+            IClientInfo result = null;
 
             if (!path.IsNullOrWhiteSpace() && File.Exists(path))
             {
@@ -77,11 +77,43 @@ namespace ahbsd.lib.icd_11.api.Secure
             }
             else
             {
-                var pathInfo = path == null ? "is null" : $"'{path}' doesn't contains a path";
-                throw new ArgumentNullException(nameof(path), $"The given path {pathInfo}");
+                if (TryGetException(path, out var exception))
+                {
+                    throw exception;
+                }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Tries to get an <see cref="Exception"/>.
+        /// </summary>
+        /// <param name="path">The path to check</param>
+        /// <param name="exception">[out] The found exception or <c>null</c> if no exception was found.</param>
+        /// <returns>Was an <see cref="Exception"/> found?</returns>
+        private static bool TryGetException(string path, out Exception exception)
+        {
+            exception = null;
+            string pathInfo;
+                
+            if (path == null)
+            {
+                pathInfo = "is null";
+                exception = new ArgumentNullException(nameof(path), $"The given path {pathInfo}");
+            }
+            else if (path.IsNullOrWhiteSpace())
+            {
+                pathInfo = $"'{path}' isn't a path";
+                exception = new FileNotFoundException(pathInfo, path);
+            }
+            else if (!File.Exists(path))
+            {
+                pathInfo = $"'{path}' doesn't contains a file";
+                exception = new FileNotFoundException(pathInfo, path);
+            }
+
+            return exception != null;
         }
     }
 }
