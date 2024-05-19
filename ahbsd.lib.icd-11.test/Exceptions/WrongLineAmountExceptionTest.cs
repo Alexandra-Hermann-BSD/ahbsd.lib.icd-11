@@ -19,7 +19,6 @@
 using System;
 using ahbsd.lib.Extensions;
 using ahbsd.lib.icd_11.api.Exceptions;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Adapter;
 using Xunit;
 
 namespace ahbsd.lib.icd_11.test.Exceptions

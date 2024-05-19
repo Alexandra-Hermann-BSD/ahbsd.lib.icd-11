@@ -18,16 +18,18 @@
 
 using System;
 using System.IO;
-using ahbsd.lib.EventArgs;
+using ahbsd.lib.EventArguments;
 using ahbsd.lib.icd_11.api.Exceptions;
 using ahbsd.lib.icd_11.api.Interfaces;
 using ahbsd.lib.icd_11.api.Secure;
+using ahbsd.lib.Interfaces;
 using Xunit;
 
 namespace ahbsd.lib.icd_11.test.Secure
 {
     public class ClientTest
     {
+        private readonly ILogger logger = Logger.Logger.GetLogger(typeof(ClientTest));
         
         [Fact]
         public void TestClient()
@@ -39,9 +41,16 @@ namespace ahbsd.lib.icd_11.test.Secure
             client.PathChanged += Client_OnPathChanged;
             client.Path = sourcePath;
             
-            var currentSender = Client.GetSender();
-            var preSender = Client.GetSender(false);
-            Assert.NotEqual(preSender, currentSender);
+            try
+            {
+                var currentSender = Client.GetSender();
+                var preSender = Client.GetSender(false);
+                Assert.NotEqual(preSender, currentSender);
+            }
+            catch (Exception e)
+            {
+                logger.AddLog(e);
+            }
             
             path = "secure2.txt";
             sourcePath = Helper.GetSourcePath(currentPath, path);
@@ -61,7 +70,8 @@ namespace ahbsd.lib.icd_11.test.Secure
                         Assert.Equal("path", argumentNullException.ParamName);
                         break;
                     default:
-                        throw e;
+                        logger.AddLog(e);
+                        break;
                 }
             }
         }

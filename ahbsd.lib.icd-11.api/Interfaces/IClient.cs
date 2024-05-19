@@ -18,7 +18,7 @@
 
 using System;
 using System.IO;
-using ahbsd.lib.EventHandler;
+using ahbsd.lib.EventArguments;
 using ahbsd.lib.icd_11.api.Exceptions;
 
 namespace ahbsd.lib.icd_11.api.Interfaces

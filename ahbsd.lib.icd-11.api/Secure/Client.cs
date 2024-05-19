@@ -20,11 +20,11 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using ahbsd.lib.EventArgs;
-using ahbsd.lib.EventHandler;
+using ahbsd.lib.EventArguments;
 using ahbsd.lib.Extensions;
 using ahbsd.lib.icd_11.api.Exceptions;
 using ahbsd.lib.icd_11.api.Interfaces;
+using ahbsd.lib.Interfaces;
 
 namespace ahbsd.lib.icd_11.api.Secure
 {
@@ -33,6 +33,7 @@ namespace ahbsd.lib.icd_11.api.Secure
     /// </summary>
     public class Client : IClient
     {
+        private static readonly ILogger logger = Logger.Logger.GetLogger(typeof(Client));
         /// <summary>
         /// The inner client info
         /// </summary>
@@ -109,15 +110,28 @@ namespace ahbsd.lib.icd_11.api.Secure
             var calls = new StackTrace();
             StackFrame[] frames = calls.GetFrames();
 
-            if (frames.Length >= nr)
+            if (frames?.Length >= nr)
             {
                 frame = frames[nr];
             }
 
-            if (frame != null && frame.HasMethod())
+            try
             {
-                var methodBase = frame.GetMethod();
-                result = methodBase?.GetMethodBody();
+                if (frame != null && frame.HasMethod() && frame.GetILOffset() > 0)
+                {
+                    var methodBase = frame.GetMethod();
+
+                    if (methodBase?.IsAbstract == false)
+                    {
+                        result = methodBase?.GetMethodBody();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                // currently ignore exception
+                result = null;
+                logger.AddLog(e);
             }
 
             return result;
