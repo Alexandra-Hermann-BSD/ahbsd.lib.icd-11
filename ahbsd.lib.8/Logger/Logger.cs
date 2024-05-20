@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using ahbsd.lib.EventArguments;
 using ahbsd.lib.Extensions;
@@ -89,14 +88,18 @@ namespace ahbsd.lib.Logger
                     }
                     catch (Exception ex)
                     {
-                        if (currentLoggers.Count > 0 && currentLoggers[0] != null)
-                        {
-                            var tempLogger = currentLoggers[0];
-                            tempLogger.AddLog(ex);
-                        }
-                        
+                        MaybeLogToFirstLogger(ex);
                     }
                 }
+            }
+        }
+
+        private static void MaybeLogToFirstLogger(Exception exception)
+        {
+            if (currentLoggers.Count > 0 && currentLoggers[0] != null)
+            {
+                var tempLogger = currentLoggers[0];
+                tempLogger.AddLog(exception);
             }
         }
 
@@ -111,6 +114,7 @@ namespace ahbsd.lib.Logger
 
             if (!newPath.IsNullOrWhiteSpace() && !File.Exists(newPath))
             {
+                // ReSharper disable once AssignNullToNotNullAttribute
                 File.Create(newPath);
             }
 

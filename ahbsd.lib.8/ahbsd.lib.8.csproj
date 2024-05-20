@@ -24,4 +24,8 @@
       <DocumentationFile>bin\Release\net8.0\ahbsd.lib.8.xml</DocumentationFile>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0-eap1" />
+    </ItemGroup>
+
 </Project>

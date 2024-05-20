@@ -18,6 +18,7 @@
 
 using System;
 using ahbsd.lib.EventArguments;
+using ahbsd.lib.icd_11.test.Exceptions;
 using ahbsd.lib.Interfaces;
 using JetBrains.Annotations;
 using Xunit;
@@ -38,7 +39,7 @@ namespace ahbsd.lib.icd_11.test.Interfaces
             Logger.Logger.LogFilePath = string.Empty;
             Logger.Logger.LogState = ILogger.State.Info;
 
-            Exception e = new ArgumentNullException("No Argument", "There is no argument");
+            Exception e = new TestException("There is no argument", ILogger.State.Info);
             
             logger.AddLog("Test log", ILogger.State.Info);
             logger.AddLog("Debug Log", ILogger.State.Debugging);
