@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>ahbsd.lib.icd_11.api</RootNamespace>
         <Title>ahbsd library for ICD-11</Title>
         <Authors>Alexandra Hermann</Authors>
@@ -12,6 +11,9 @@
         <AssemblyVersion>1.0</AssemblyVersion>
         <FileVersion>1.0</FileVersion>
         <NeutralLanguage>en</NeutralLanguage>
+        <LangVersion>8</LangVersion>
+        <TargetFramework>net8.0</TargetFramework>
+        <CodePage>65001</CodePage>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -24,8 +26,17 @@
       <DocumentationFile>bin\Release\ahbsd.lib.icd-11.api.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+      <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="ahbsd.lib" Version="1.6.0" />
+      <PackageReference Include="IdentityModel" Version="7.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ahbsd.lib.8\ahbsd.lib.8.csproj" />
     </ItemGroup>
 
 </Project>

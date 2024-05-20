@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>ahbsd.lib</RootNamespace>
+        <LangVersion>8</LangVersion>
+        <Nullable>disable</Nullable>
+        <AssemblyName>ahbsd.lib</AssemblyName>
+        <PackageId>ahbsd.lib.2</PackageId>
+        <Version>2.0.0</Version>
+        <Title>ahbsd.lib 2.0</Title>
+        <Authors>Alexandra Hermann</Authors>
+        <Company>Alexandra Hermann – Beratung, Software, Design</Company>
+        <Product>ahbsd.lib</Product>
+        <AssemblyVersion>2.0</AssemblyVersion>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\net8.0\ahbsd.lib.8.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\net8.0\ahbsd.lib.8.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0-eap1" />
+    </ItemGroup>
+
+</Project>

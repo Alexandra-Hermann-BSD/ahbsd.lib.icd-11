@@ -1,0 +1,38 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="ahbsd.lib.8/Logger/Logger.cs">
+    <Files>
+      <File FileName="ahbsd.lib.8/EventArguments/ChangeEventArgs.cs" Line="2" Column="32" />
+      <File FileName="ahbsd.lib.8/Extensions/StringExtensions.cs" Line="1" Column="1" />
+      <File FileName="ahbsd.lib.8/Interfaces/ILogger.cs" Line="2" Column="28" />
+      <File FileName="ahbsd.lib.8/Logger/Logger.cs" Line="2" Column="24" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ahbsd.lib.icd-11" expanded="True">
+            <Node name="ahbsd.lib.8">
+              <Node name="EventArguments" expanded="True" />
+              <Node name="Extensions" expanded="True" />
+              <Node name="Interfaces" expanded="True" />
+              <Node name="Logger" expanded="True">
+                <Node name="Logger.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State name="__root__">
+          <Node name="ahbsd.lib.icd-11" expanded="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.ahbsd.lib.icd-11.test PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+</Properties>
