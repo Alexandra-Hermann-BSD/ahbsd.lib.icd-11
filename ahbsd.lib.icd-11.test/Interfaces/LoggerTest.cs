@@ -30,9 +30,9 @@ namespace ahbsd.lib.icd_11.test.Interfaces
     {
 
         [Fact]
-        public void TestLogger()
+        public void TestLogger1()
         {
-            var logger = Logger.Logger.GetLogger(typeof(LoggerTest));
+            ILogger logger = Logger.Logger.GetLogger(typeof(LoggerTest));
             Logger.Logger.OnLogStateChanged += Logger_OnLogStateChanged;
             Logger.Logger.OnLogFilePathChanged += Logger_OnLogFilePathChanged;
 
@@ -61,6 +61,48 @@ namespace ahbsd.lib.icd_11.test.Interfaces
             logger.AddLog(e);
 
             Assert.NotEmpty(logger.Log);
+            
+            logger.Dispose();
+            
+            Assert.True(logger.IsDisposed);
+        }
+
+        [Fact]
+        public void TestLogger2()
+        {
+            ILogger logger = Logger.Logger.GetLogger(this);
+            Logger.Logger.OnLogStateChanged += Logger_OnLogStateChanged;
+            Logger.Logger.OnLogFilePathChanged += Logger_OnLogFilePathChanged;
+
+            Logger.Logger.LogFilePath = string.Empty;
+            Logger.Logger.LogState = ILogger.State.Info;
+
+            Exception e = new TestException("There is no argument", ILogger.State.Info);
+            
+            logger.AddLog("Test log", ILogger.State.Info);
+            logger.AddLog("Debug Log", ILogger.State.Debugging);
+            logger.AddLog("Error log");
+            logger.AddLog(e);
+
+            Logger.Logger.LogState = ILogger.State.Debugging;
+            
+            logger.AddLog("Test log", ILogger.State.Info);
+            logger.AddLog("Debug Log", ILogger.State.Debugging);
+            logger.AddLog("Error log");
+            logger.AddLog(e);
+
+            Logger.Logger.LogState = ILogger.State.Error;
+            
+            logger.AddLog("Test log", ILogger.State.Info);
+            logger.AddLog("Debug Log", ILogger.State.Debugging);
+            logger.AddLog("Error log");
+            logger.AddLog(e);
+
+            Assert.NotEmpty(logger.Log);
+            
+            logger.Dispose();
+            
+            Assert.True(logger.IsDisposed);
         }
 
         private static void Logger_OnLogFilePathChanged(object sender, ChangeEventArgs<string> e)

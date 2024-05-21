@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 using ahbsd.lib.EventArguments;
 using ahbsd.lib.Extensions;
@@ -32,6 +33,7 @@ namespace ahbsd.lib.Logger
     /// <summary>
     /// A logger class
     /// </summary>
+    [Serializable]
     public class Logger : ILogger
     {
         private static readonly IList<ILogger> currentLoggers;
@@ -60,6 +62,25 @@ namespace ahbsd.lib.Logger
 
         }
 #pragma warning restore S3963
+        
+        /// <summary>
+        /// Deserializing constructor.
+        /// </summary>
+        /// <param name="info">The serialization info</param>
+        /// <param name="context">The context</param>
+        protected Logger(SerializationInfo info, StreamingContext context)
+        {
+            if (info != null)
+            {
+                LogType = (Type)info.GetValue(nameof(LogType), typeof(Type));
+                if (!currentLoggers.Contains(this))
+                {
+                    currentLoggers.Add(this);
+                }
+                
+            }
+        }
+            
         
         /// <summary>
         /// Internal constructor.
@@ -112,13 +133,16 @@ namespace ahbsd.lib.Logger
         {
             CloseWriter();
 
-            if (!newPath.IsNullOrWhiteSpace() && !File.Exists(newPath))
+            if (!newPath.IsNullOrWhiteSpace())
             {
-                // ReSharper disable once AssignNullToNotNullAttribute
-                File.Create(newPath);
+                if (!File.Exists(newPath))
+                {
+                    // ReSharper disable once AssignNullToNotNullAttribute
+                    File.Create(newPath);
+                }
+                
+                writer = new StreamWriter(newPath, true, Encoding.Unicode, 100);
             }
-
-            writer = new StreamWriter(newPath, true, Encoding.Unicode, 100);
         }
 
         private static void CloseWriter()
@@ -227,6 +251,9 @@ namespace ahbsd.lib.Logger
             logBuilder.AppendLine();
         }
 
+        /// <inheritdoc />
+        public bool IsDisposed { get; private set; }
+
         private static void ReleaseUnmanagedResources()
         {
             if (writer != null && currentLoggers.Count == 0)
@@ -247,11 +274,12 @@ namespace ahbsd.lib.Logger
             {
                 // nothing for now
             }
-            else
-            {
-                currentLoggers.Remove(this);
-            }
+            
+            currentLoggers.Remove(this);
+            
             ReleaseUnmanagedResources();
+
+            IsDisposed = true;
         }
 
         /// <inheritdoc />
@@ -267,11 +295,26 @@ namespace ahbsd.lib.Logger
             Dispose(false);
         }
 
+        /// <inheritdoc />
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(LogType), LogType);
+        }
+
         /// <summary>
         /// Logger Factory.
         /// </summary>
         /// <param name="type">The type of object to log</param>
         /// <returns>Gets a new logger</returns>
+        /// <remarks>A logger by a <see cref="Type"/></remarks>
         public static ILogger GetLogger(Type type) => new Logger(type);
+
+        /// <summary>
+        /// Logger Factory.
+        /// </summary>
+        /// <param name="o">The object to log</param>
+        /// <returns>Gets a new logger</returns>
+        /// <remarks>A logger by an <see cref="Object"/> to get the <see cref="Type"/> from</remarks>
+        public static ILogger GetLogger(object o) => new Logger(o.GetType());
     }
 }

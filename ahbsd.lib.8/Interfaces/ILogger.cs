@@ -17,6 +17,7 @@
 //     limitations under the License.
 
 using System;
+using System.Runtime.Serialization;
 using ahbsd.lib.EventArguments;
 
 namespace ahbsd.lib.Interfaces
@@ -24,7 +25,7 @@ namespace ahbsd.lib.Interfaces
     /// <summary>
     /// Interface for a logger.
     /// </summary>
-    public interface ILogger : IDisposable
+    public interface ILogger : IDisposable, ISerializable
     {
         /// <summary>
         /// Gets the current log.
@@ -51,6 +52,12 @@ namespace ahbsd.lib.Interfaces
         /// <param name="e">The given exception</param>
         /// <remarks>The <see cref="State"/> will be automatically <see cref="State.Error"/>.</remarks>
         void AddLog(Exception e);
+        
+        /// <summary>
+        /// Gets whether is logger is already disposed or not.
+        /// </summary>
+        /// <value>Is this logger already disposed?</value>
+        bool IsDisposed { get; }
         
         /// <summary>
         /// The logging status.

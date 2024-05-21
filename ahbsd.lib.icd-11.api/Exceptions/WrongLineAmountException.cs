@@ -76,7 +76,7 @@ namespace ahbsd.lib.icd_11.api.Exceptions
             if (!message.IsNullOrWhiteSpace())
             {
                 builder.Append(message.TrimEnd());
-                builder.Append(" ");
+                builder.Append(' ');
             }
 
             builder.Append($"{expected} ");
@@ -96,7 +96,7 @@ namespace ahbsd.lib.icd_11.api.Exceptions
             }
             
             IsOneOrNot(real, builder);
-            builder.Append(".");
+            builder.Append('.');
 
             return builder.ToString();
         }
